@@ -77,7 +77,7 @@ static ssize_t send_arp(ip_address_t *ipaddress, ssize_t pack_len)
 	       ifp->hw_addr_bcast, ifp->hw_addr_len);
 
 	if (__test_bit(LOG_DETAIL_BIT, &debug))
-		log_message(LOG_INFO, "Sending gratuitous ARP on %s for %s",
+		log_message(LOG_INFO, "[wg] Sending gratuitous ARP on %s for %s",
 			    ifp->ifname,
 			    inet_ntop2(ipaddress->u.sin.sin_addr.s_addr));
 

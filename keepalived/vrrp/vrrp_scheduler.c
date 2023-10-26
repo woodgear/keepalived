@@ -726,7 +726,7 @@ try_up_instance(vrrp_t *vrrp, bool leaving_init)
 	    vrrp->ifp &&
 	    vrrp->saddr.ss_family != AF_UNSPEC) {
 		if (__test_bit(LOG_DETAIL_BIT, &debug))
-			log_message(LOG_INFO, "%s: sending gratuitous %s for %s", vrrp->iname, vrrp->family == AF_INET ? "ARP" : "NA", inet_sockaddrtos(&vrrp->saddr));
+			log_message(LOG_INFO, "%s: [wg] sending gratuitous %s for %s", vrrp->iname, vrrp->family == AF_INET ? "ARP" : "NA", inet_sockaddrtos(&vrrp->saddr));
 
 		ip_addr.ifp = IF_BASE_IFP(vrrp->ifp);
 

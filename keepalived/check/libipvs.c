@@ -425,6 +425,7 @@ static int ipvs_getinfo(void)
 
 int ipvs_init(void)
 {
+	log_message(LOG_INFO, "[wg] in ipvs init");
 	socklen_t len;
 	struct ip_vs_getinfo ipvs_info;
 
@@ -433,12 +434,14 @@ int ipvs_init(void)
 #ifdef LIBIPVS_USE_NL
 #ifdef _LIBNL_DYNAMIC_
 	try_nl = libnl_init();
-	if (!try_nl)
-		log_message(LOG_INFO, "Note: IPVS with IPv6 will not be supported");
+	if (!try_nl) {
+        log_message(LOG_INFO, "Note: IPVS with IPv6 will not be supported");
+    }
 #else
 	try_nl = true;
 #endif
 
+	log_message(LOG_INFO, "[wg] def LIBIPVS_USE_NL");
 	if (try_nl && ipvs_nl_send_message(NULL, NULL, NULL) == 0)
 		return ipvs_getinfo();
 
@@ -463,6 +466,8 @@ int ipvs_init(void)
 
 int ipvs_flush(void)
 {
+
+	log_message(LOG_INFO, "[wg] in ipvs flush");
 #ifdef LIBIPVS_USE_NL
 	if (try_nl) {
 		struct nl_msg *msg = ipvs_nl_message(IPVS_CMD_FLUSH, 0);
@@ -513,6 +518,8 @@ nla_put_failure:
 
 int ipvs_add_service(ipvs_service_t *svc)
 {
+
+	log_message(LOG_INFO, "[wg] in ipvs add svc");
 	ipvs_func = ipvs_add_service;
 #ifdef LIBIPVS_USE_NL
 	if (try_nl) {
@@ -536,6 +543,8 @@ out_err:
 
 int ipvs_update_service(ipvs_service_t *svc)
 {
+
+	log_message(LOG_INFO, "[wg] in ipvs update svc");
 	ipvs_func = ipvs_update_service;
 #ifdef LIBIPVS_USE_NL
 	if (try_nl) {
@@ -558,6 +567,8 @@ out_err:
 
 int ipvs_del_service(ipvs_service_t *svc)
 {
+
+	log_message(LOG_INFO, "[wg] in ipvs del svc");
 	ipvs_func = ipvs_del_service;
 #ifdef LIBIPVS_USE_NL
 	if (try_nl) {
@@ -645,6 +656,8 @@ nla_put_failure:
 
 int ipvs_add_dest(ipvs_service_t *svc, ipvs_dest_t *dest)
 {
+
+	log_message(LOG_INFO, "[wg] in ipvs add dest");
 	ipvs_servicedest_t svcdest;
 
 	ipvs_func = ipvs_add_dest;
@@ -678,6 +691,8 @@ out_err:
 
 int ipvs_update_dest(ipvs_service_t *svc, ipvs_dest_t *dest)
 {
+
+	log_message(LOG_INFO, "[wg] in ipvs update dest");
 	ipvs_servicedest_t svcdest;
 
 	ipvs_func = ipvs_update_dest;
@@ -709,6 +724,8 @@ out_err:
 
 int ipvs_del_dest(ipvs_service_t *svc, ipvs_dest_t *dest)
 {
+
+	log_message(LOG_INFO, "[wg] in ipvs del dest");
 	ipvs_servicedest_t svcdest;
 
 	ipvs_func = ipvs_del_dest;
@@ -1303,6 +1320,8 @@ out_err:
 
 void ipvs_close(void)
 {
+
+	log_message(LOG_INFO, "[wg] in ipvs close");
 #ifdef LIBIPVS_USE_NL
 	if (try_nl) {
 		if (sock) {

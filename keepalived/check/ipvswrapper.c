@@ -167,6 +167,7 @@ format_drule(char *buf, const ipvs_dest_t *drule)
 static int
 ipvs_talk(int cmd, ipvs_service_t *srule, ipvs_dest_t *drule, ipvs_daemon_t *daemonrule, bool ignore_error)
 {
+    log_message(LOG_INFO, "[wg] ipvs talk %d",cmd);
 	int result = -1;
 
 	if (no_ipvs)
