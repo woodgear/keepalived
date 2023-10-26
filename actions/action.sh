@@ -9,8 +9,16 @@ function kp-build() {
   ./autogen.sh
   ./configure --prefix=$PWD/target
   make
+  md5sum ./bin/keepalived
 }
 
-function kp-loop() {
+function kp-loop() (
   make
-}
+  md5sum ./bin/keepalived
+
+)
+
+function kp-test() (
+  keepalived -n -l -D -G -f ./live.conf -r ./vrrp.pid -p ./kp.pid -c ./kp.check.pid
+
+)
