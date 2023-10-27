@@ -1035,6 +1035,8 @@ epilog(thread_ref_t thread, register_checker_t method)
 	bool checker_was_up;
 	bool rs_was_alive;
 
+	log_message(LOG_INFO, "epilog  %s %d %d", FMT_CHK(checker),method,!http_get_check->failed_url);
+
 	if (method == REGISTER_CHECKER_NEW) {
 		if (list_is_last(&http_get_check->url_it->e_list, &http_get_check->url))
 			http_get_check->url_it = NULL;
@@ -1141,6 +1143,7 @@ void
 timeout_epilog(thread_ref_t thread, const char *debug_msg)
 {
 	checker_t *checker = THREAD_ARG(thread);
+	log_message(LOG_INFO, "timeout_epilog %s  %s." , debug_msg , FMT_CHK(checker));
 
 	/* check if server is currently alive */
 	if (checker->is_up || !checker->has_run) {

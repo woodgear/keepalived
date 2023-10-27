@@ -746,6 +746,7 @@ set_checker_state(checker_t *checker, bool up)
 void
 update_svr_checker_state(bool alive, checker_t *checker)
 {
+    log_message(LOG_INFO,"do check for %s success %d",FMT_CHK(checker),alive);
 	if (checker->is_up == alive) {
 		if (!checker->has_run) {
 			if (checker->alpha || !alive)

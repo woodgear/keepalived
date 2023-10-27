@@ -7,7 +7,7 @@ function kp-build-in-docker() {
 
 function kp-build() {
   ./autogen.sh
-  ./configure --prefix=$PWD/target
+  ./configure --prefix=$PWD/target --enable-checker-debug
   make
   md5sum ./bin/keepalived
 }
@@ -15,10 +15,15 @@ function kp-build() {
 function kp-loop() (
   make
   md5sum ./bin/keepalived
+)
 
+function kp-note() (
+  # sudo iptables -t filter --append OUTPUT --dst 192.168.131.63 -j DROP ;sudo iptables-save|grep DROP
+  # sudo ipvsadm -ln
+  # sudo iptables -t filter -D OUTPUT --dst 192.168.131.63 -j DROP ;sudo iptables-save|grep DROP
+  return
 )
 
 function kp-test() (
-  keepalived -n -l -D -G -f ./live.conf -r ./vrrp.pid -p ./kp.pid -c ./kp.check.pid
-
+  sudo ../bin/keepalived -n -l -D -G -f ./live.conf -r ./vrrp.pid -p ./kp.pid -c ./kp.check.pid 2>&1 | tee ./kp.log
 )
