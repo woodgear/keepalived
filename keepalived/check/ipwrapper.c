@@ -41,6 +41,9 @@
 #include "check_nftables.h"
 #endif
 
+#include <stdio.h>
+#include <execinfo.h>
+
 static bool __attribute((pure))
 vs_iseq(const virtual_server_t *vs_a, const virtual_server_t *vs_b)
 {
@@ -240,14 +243,28 @@ update_vs_notifies(virtual_server_t *vs, bool stopping)
 	}
 }
 
+void print_stack() {
+  void *stack_frames[100];
+  int n_frames = backtrace(stack_frames, 100);
+  char **symbols = backtrace_symbols(stack_frames, n_frames);
+
+  for (int i = 0; i < n_frames; i++) {
+    printf("%s\n", symbols[i]);
+  }
+
+  free(symbols);
+}
 static void
 clear_service_rs(virtual_server_t *vs, real_server_t *rs, bool stopping)
 {
+
+	log_message(LOG_INFO, "[wg] clear svc rs %s %s %d ", FMT_RS(rs, vs), FMT_VS(vs),stopping);
+    print_stack();
 	smtp_rs rs_info = { .vs = vs };
 	bool sav_inhibit;
 
 	if (rs->set || stopping)
-		log_message(LOG_INFO, "%s %sservice %s from VS %s",
+		log_message(LOG_INFO, "[wg] %s %sservice %s from VS %s",
 				stopping ? "Shutting down" : "Removing",
 				rs->inhibit && !rs->alive ? "(inhibited) " : "",
 				FMT_RS(rs, vs),

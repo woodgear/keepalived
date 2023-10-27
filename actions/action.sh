@@ -12,6 +12,12 @@ function kp-build() {
   md5sum ./bin/keepalived
 }
 
+function kp-init-run() (
+  mkdir -p ./run
+  cp ./actions/live.conf ./run
+  cp ./actions/check.sh ./run
+  cp ./actions/rip_check.sh ./run
+)
 function kp-loop() (
   make
   md5sum ./bin/keepalived
